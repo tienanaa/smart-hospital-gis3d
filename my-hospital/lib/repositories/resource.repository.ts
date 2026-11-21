@@ -6,16 +6,30 @@ export type Pagination = {
   limit: number;
 };
 
+const resourceIds = {
+  vertices: ["vertexid"],
+  edges: ["edgeid"],
+  solids: ["solidid"],
+  faces: ["faceid"],
+  complexes: ["complexid"],
+  nodes: ["nodeid"],
+  arcs: ["arcid"],
+  node_solid: ["nodeid", "solidid"],
+} satisfies Record<ResourceName, string[]>;
+
 export async function getResourceRows(
   resource: ResourceName,
   { page, limit }: Pagination,
 ) {
   const from = (page - 1) * limit;
   const to = from + limit - 1;
-  const { data, count, error } = await getSupabaseClient()
+  const query = getSupabaseClient()
     .from(resources[resource])
-    .select("*", { count: "exact" })
-    .range(from, to);
+    .select("*", { count: "exact" });
+  for (const id of resourceIds[resource]) {
+    query.order(id);
+  }
+  const { data, count, error } = await query.range(from, to);
 
   if (error) {
     throw error;

@@ -35,6 +35,7 @@ export type Database = {
         spacetype: string;
         face_list: Json;
         metadata: Json | null;
+        floor_level: number;
       }>;
       udm_face: Table<{
         faceid: string;
@@ -53,6 +54,10 @@ export type Database = {
         x: number;
         y: number;
         z: number;
+      }>;
+      node_solid: Table<{
+        nodeid: string;
+        solidid: string;
       }>;
       arc: Table<{
         arcid: string;

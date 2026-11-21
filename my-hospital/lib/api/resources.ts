@@ -10,6 +10,7 @@ export const resources = {
   complexes: "udm_complex",
   nodes: "node",
   arcs: "arc",
+  node_solid: "node_solid",
 } as const satisfies Record<string, TableName>;
 
 export type ResourceName = keyof typeof resources;
