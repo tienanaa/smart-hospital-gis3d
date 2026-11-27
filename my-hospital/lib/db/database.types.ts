@@ -54,6 +54,7 @@ export type Database = {
         x: number;
         y: number;
         z: number;
+        is_emergency_exit: boolean;
       }>;
       node_solid: Table<{
         nodeid: string;
@@ -67,6 +68,38 @@ export type Database = {
         right_poly: string | null;
         cost: number;
         reverse_cost: number;
+        is_blocked: boolean;
+      }>;
+      fire_scenarios: Table<{
+        scenarioid: string;
+        scenarioname: string;
+        description: string | null;
+      }>;
+      voxel_grid_config: Table<{
+        configid: string;
+        x_min: number;
+        y_min: number;
+        z_min: number;
+        x_max: number;
+        y_max: number;
+        z_max: number;
+        dx: number;
+        dy: number;
+        dz: number;
+        smoke_penalty: number;
+        smoke_block: number;
+        temp_penalty: number;
+        temp_block: number;
+        penalty_factor: number;
+      }>;
+      voxel_state: Table<{
+        scenarioid: string;
+        time_step: number;
+        i_idx: number;
+        j_idx: number;
+        k_idx: number;
+        smoke_density: number;
+        temperature: number;
       }>;
     };
     Views: Record<string, never>;

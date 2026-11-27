@@ -2,11 +2,14 @@ import { useEffect, useRef } from "react";
 import { RoomDetails, roomName } from "./RoomDetails";
 import type { Room } from "./types";
 
-export function RoomPopup({ room, rooms, onSelect, onClose }: {
+export function RoomPopup({ room, rooms, onSelect, onClose, onRouteFrom, onRouteTo }: {
   room?: Room;
   rooms: Room[];
   onSelect: (id: string) => void;
   onClose: () => void;
+  /** Đặt phòng đang xem làm điểm bắt đầu / kết thúc (chỉ có khi phòng nối vào mạng lưới) */
+  onRouteFrom?: (id: string) => void;
+  onRouteTo?: (id: string) => void;
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const title = room ? "Thông tin phòng" : "Danh sách phòng";
@@ -42,6 +45,18 @@ export function RoomPopup({ room, rooms, onSelect, onClose }: {
           </ul>
         )}
       </div>
+      {room && onRouteFrom && onRouteTo && (
+        <footer className="flex shrink-0 gap-2 border-t border-slate-200 p-3">
+          <button type="button" onClick={() => onRouteFrom(room.solid.solidid)}
+            className="flex-1 rounded-lg border border-green-700 px-3 py-2 text-sm font-semibold text-green-800 hover:bg-green-50">
+            Đi từ đây
+          </button>
+          <button type="button" onClick={() => onRouteTo(room.solid.solidid)}
+            className="flex-1 rounded-lg bg-teal-700 px-3 py-2 text-sm font-semibold text-white hover:bg-teal-800">
+            Chỉ đường đến đây
+          </button>
+        </footer>
+      )}
     </section>
   );
 }

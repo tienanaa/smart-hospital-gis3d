@@ -43,7 +43,10 @@ CREATE TABLE IF NOT EXISTS Node (
     -- Tọa độ 3D
     x DOUBLE PRECISION NOT NULL,
     y DOUBLE PRECISION NOT NULL,
-    z DOUBLE PRECISION NOT NULL
+    z DOUBLE PRECISION NOT NULL,
+
+    -- Nút là lối thoát hiểm (đích của chức năng thoát hiểm)
+    Is_Emergency_Exit BOOLEAN NOT NULL DEFAULT false
 );
 
 CREATE TABLE IF NOT EXISTS Arc (
@@ -69,6 +72,10 @@ CREATE TABLE IF NOT EXISTS Arc (
     -- Chi phí di chuyển hai chiều
     Cost DOUBLE PRECISION NOT NULL,
     Reverse_Cost DOUBLE PRECISION NOT NULL,
+
+    -- Khóa cung cố định (công trình/bảo trì). Khói/lửa theo kịch bản cháy
+    -- được mô phỏng bằng Voxel_State, không dùng cột này.
+    Is_Blocked BOOLEAN NOT NULL DEFAULT false,
 
     -- Kiểm tra tính hợp lệ
     CONSTRAINT chk_arc_different_nodes

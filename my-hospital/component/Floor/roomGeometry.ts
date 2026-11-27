@@ -210,6 +210,8 @@ export function buildFloorModel(data: GeometryData): FloorModel {
       .map(([level, group]) => ({ level, group })),
     rooms,
     skippedCount,
+    routeLayer: Object.assign(new THREE.Group(), { name: "route" }),
+    fireLayer: Object.assign(new THREE.Group(), { name: "fire" }),
   };
 }
 

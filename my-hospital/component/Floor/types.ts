@@ -21,6 +21,10 @@ export type FloorModel = {
   floors: FloorGroup[];
   rooms: Room[];
   skippedCount: number;
+  /** Lớp vẽ tuyến đường tìm được */
+  routeLayer: THREE.Group;
+  /** Lớp vẽ voxel khói/nhiệt của kịch bản cháy */
+  fireLayer: THREE.Group;
 };
 
 export type Room = { solid: Solid; level: number | null; mesh: THREE.Mesh<THREE.ExtrudeGeometry, THREE.MeshStandardMaterial> | null };

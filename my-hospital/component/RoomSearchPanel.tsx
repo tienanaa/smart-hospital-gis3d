@@ -9,10 +9,9 @@ import {
   RoomOption,
   findNearestEmergencyExit,
   findShortestPath,
-  loadFireVoxels,
-  loadHospitalRoutingData,
   searchRooms,
 } from "../lib/dijkstra";
+import { loadFireVoxels, loadHospitalRoutingData } from "../lib/routingData.server";
 
 interface RoomSearchPanelProps {
   /** Kịch bản cháy đang chọn trên giao diện chính (mặc định S1: Bình thường) */

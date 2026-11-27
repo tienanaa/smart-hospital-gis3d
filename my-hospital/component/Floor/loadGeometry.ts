@@ -2,7 +2,7 @@ import type { Vertex, Edge, Solid, Face, GeometryData } from "./types";
 
 const pageSize = 100;
 
-type Resource = "vertices" | "edges" | "solids" | "faces";
+type Resource = "vertices" | "edges" | "solids" | "faces" | "nodes" | "arcs" | "node_solid";
 
 type ApiResponse<T> = {
   data: T[];
@@ -11,7 +11,7 @@ type ApiResponse<T> = {
   };
 };
 
-async function fetchResource<T>(resource: Resource): Promise<T[]> {
+export async function fetchResource<T>(resource: Resource): Promise<T[]> {
   const firstResponse = await fetch(
     `/api/v1/${resource}?page=1&limit=${pageSize}`,
     { cache: "no-store" },

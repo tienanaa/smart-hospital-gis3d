@@ -2,15 +2,36 @@ import { useEffect, type RefObject } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { attachRoomPicking } from "./roomPicking";
+import { filterLayerByLevel } from "./routeLayer";
 import type { FloorModel } from "./types";
 
-export function updateFloorScene(model: FloorModel, level: number | null, roomId: string | null) {
+export type RouteMarks = { start: string | null; end: string | null };
+
+export function updateFloorScene(
+  model: FloorModel,
+  level: number | null,
+  roomId: string | null,
+  marks: RouteMarks = { start: null, end: null },
+  /** Làm mờ khối phòng để nhìn thấy khói/lửa bên trong */
+  ghostRooms = false,
+) {
   for (const floor of model.floors) {
     floor.group.visible = level === null || floor.level === level;
   }
   for (const room of model.rooms) {
-    room.mesh?.material.emissive.setHex(room.solid.solidid === roomId ? 0x408c81 : 0);
+    const id = room.solid.solidid;
+    const emissive = id === marks.start ? 0x1d6b35
+      : id === marks.end ? 0x8a1f1f
+      : id === roomId ? 0x408c81 : 0;
+    if (!room.mesh) continue;
+    const material = room.mesh.material;
+    material.emissive.setHex(emissive);
+    const marked = id === marks.start || id === marks.end;
+    material.opacity = ghostRooms && !marked ? 0.28 : 1;
+    material.depthWrite = !ghostRooms || marked;
   }
+  filterLayerByLevel(model.routeLayer, level);
+  filterLayerByLevel(model.fireLayer, level);
 }
 
 function disposeObject(object: THREE.Object3D) {
@@ -65,6 +86,8 @@ export function useFloorScene(
     grid.rotation.x = Math.PI / 2;
     grid.position.set(center.x, center.y, bounds.min.z - 0.03);
     scene.add(grid);
+    scene.add(model.routeLayer);
+    scene.add(model.fireLayer);
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.7));
     const keyLight = new THREE.DirectionalLight(0xffffff, 0.8);
@@ -91,6 +114,8 @@ export function useFloorScene(
     const cleanupScene = () => {
       controls?.dispose();
       disposeObject(grid);
+      scene.remove(model.routeLayer);
+      scene.remove(model.fireLayer);
       for (const floor of sceneFloors) {
         disposeObject(floor.group);
       }

@@ -23,8 +23,8 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 ## Database API
 
 The API uses the Supabase Data API. Configure `NEXT_PUBLIC_SUPABASE_URL` and
-`SUPABASE_KEY` in `.env.local`; the key is only used by server-side code. Do not
-commit `.env.local` or expose a secret/service-role key to the browser. The tables
+`SUPABASE_KEY` in `.env`; the key is only used by server-side code. Do not
+commit `.env` or expose a secret/service-role key to the browser. The tables
 must already exist in Supabase; their schema is described in
 `../database/database.sql` and typed in `lib/db/database.types.ts`.
 
